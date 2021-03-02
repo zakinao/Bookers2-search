@@ -14,6 +14,22 @@ class SearchController < ApplicationController
       Book.where(title: content)
     end
   end
+  
+  def forward(model, content)
+    if model == 'user'
+      User.where("name LIKE ?", "#{content}%")
+    elsif model == 'post'
+      Post.where("title LIKE ?", "#{content}%")
+    end
+  end
+
+  def backward(model, content)
+    if model == 'user'
+      User.where("name LIKE ?", "%#{content}")
+    elsif model == 'post'
+      Post.where("title LIKE ?", "%#{content}")
+    end
+  end
 
   def partical(model, content)
     if model =="user"
@@ -29,6 +45,10 @@ class SearchController < ApplicationController
       match(model, content)
     when 'partical'
       partical(model, content)
-    end
+    when 'forward'
+      forward(model, content)
+    when 'backward'
+      backward(model, content)
+      
   end
 end
